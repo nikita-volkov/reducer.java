@@ -130,6 +130,10 @@
   <dependencies>
     <dependency>
       <groupId>com.github.nikita-volkov.java</groupId>
+      <artifactId>iterables</artifactId>
+      <version>0.1.2</version>
+    </dependency>
+    <dependency>
       <artifactId>iterations</artifactId>
       <version>0.6-SNAPSHOT</version>
     </dependency>
