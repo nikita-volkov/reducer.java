@@ -1,7 +1,8 @@
 package com.github.nikita_volkov.java.reducers;
 
-import com.github.nikita_volkov.java.composites.*;
+import com.github.nikita_volkov.java.composites.Product2;
 import com.github.nikita_volkov.java.reducer.*;
+import com.github.nikita_volkov.java.reducer.reducible.IterableReducible;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -16,7 +17,7 @@ public class Test extends TestCase {
         string -> string + "!"
       );
 
-    assertEquals("abc!", reducer.consume(Arrays.asList("a", "b", "c").iterator()));
+    assertEquals("abc!", new IterableReducible<>(Arrays.asList("a", "b", "c")).reduce(reducer));
 
   }
 
@@ -31,7 +32,7 @@ public class Test extends TestCase {
         r -> r._2 + "(" + r._1.toString() + ")"
       );
 
-    assertEquals("abc(3)", reducer.consume(Arrays.asList("a", "b", "c").iterator()));
+    assertEquals("abc(3)", new IterableReducible<>(Arrays.asList("a", "b", "c")).reduce(reducer));
 
   }
 
@@ -40,7 +41,7 @@ public class Test extends TestCase {
     Reducer<String, String> reducer =
       new UniquifyingReducer<>(new StringCatReducer());
 
-    assertEquals("abc", reducer.consume(Arrays.asList("a", "b", "b", "c").iterator()));
+    assertEquals("abc", new IterableReducible<>(Arrays.asList("a", "b", "b", "c")).reduce(reducer));
 
   }
 
@@ -49,7 +50,7 @@ public class Test extends TestCase {
     Reducer<Integer, String> reducer =
       new ContraflatmappingReducer<>(new StringCatReducer(), i -> i % 2 == 0 ? Arrays.asList(i.toString()) : Arrays.asList());
 
-    assertEquals("24", reducer.consume(Arrays.asList(1, 2, 3, 4, 5)));
+    assertEquals("24", new IterableReducible<>(Arrays.asList(1, 2, 3, 4, 5)).reduce(reducer));
 
   }
 
@@ -61,7 +62,7 @@ public class Test extends TestCase {
         new LengthReducer<>()
       );
 
-    assertEquals(new Product2<>(3L, 5L), reducer.consume(Arrays.asList(1, 2, 3, 4, 5)));
+    assertEquals(new Product2<>(3L, 5L), new IterableReducible<>(Arrays.asList(1, 2, 3, 4, 5)).reduce(reducer));
 
   }
 

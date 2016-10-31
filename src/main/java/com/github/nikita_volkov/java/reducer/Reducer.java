@@ -11,12 +11,4 @@ public interface Reducer<input, output> {
    */
   Iteration<input, output> newIteration();
 
-  default output consume(Iterator<input> iterator) {
-    return newIteration().consume(iterator);
-  }
-
-  default output consume(Iterable<input> iterable) {
-    return consume(iterable.iterator());
-  }
-
 }
