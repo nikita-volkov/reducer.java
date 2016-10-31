@@ -1,9 +1,6 @@
 package com.github.nikita_volkov.java.reducer.reducible;
 
 import com.github.nikita_volkov.java.iterations.Iteration;
-import com.github.nikita_volkov.java.reducer.Reducer;
-
-import java.util.Iterator;
 
 /**
  * Turn any Iterable into Reducible.
@@ -17,11 +14,9 @@ public final class IterableReducible<input> implements Reducible<input> {
   }
 
   @Override
-  public <output> output reduce(Reducer<input, output> reducer) {
-    Iterator<input> iterator = iterable.iterator();
-    Iteration<input, output> iteration = reducer.newIteration();
-    while (iterator.hasNext()) {
-      if (!iteration.step(iterator.next())) break;
+  public <output> output reduce(Iteration<input, output> iteration) {
+    for (input input : iterable) {
+      if (!iteration.step(input)) break;
     }
     return iteration.output();
   }
