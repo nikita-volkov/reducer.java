@@ -1,24 +1,22 @@
 package com.github.nikita_volkov.java.reducer.reducible;
 
 import com.github.nikita_volkov.java.iterations.Iteration;
+import com.github.nikita_volkov.java.iterations.executor.*;
 
 /**
  * Turn any Iterable into Reducible.
  */
 public final class IterableReducible<input> implements Reducible<input> {
 
-  private final Iterable<input> iterable;
+  private final IterationExecutor<input> iterationExecutor;
 
   public IterableReducible(Iterable<input> iterable) {
-    this.iterable = iterable;
+    this.iterationExecutor = new IterableIterationExecutor<>(iterable);
   }
 
   @Override
-  public <output> output reduce(Iteration<input, output> iteration) {
-    for (input input : iterable) {
-      if (!iteration.step(input)) break;
-    }
-    return iteration.output();
+  public <output> output execute(Iteration<input, output> iteration) {
+    return iterationExecutor.execute(iteration);
   }
 
 }
