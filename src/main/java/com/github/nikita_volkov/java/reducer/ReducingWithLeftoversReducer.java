@@ -5,12 +5,12 @@ import com.github.nikita_volkov.java.iterations.Iteration;
 
 import java.util.Optional;
 
-public final class PrereducingWithLeftoversReducer<input, intermediateOutput, output> implements Reducer<input, output> {
+public final class ReducingWithLeftoversReducer<input, intermediateOutput, output> implements Reducer<input, output> {
 
   private final Reducer<input, Product2<Optional<input>, intermediateOutput>> intermediateReducer;
   private final Reducer<intermediateOutput, output> mainReducer;
 
-  public PrereducingWithLeftoversReducer(Reducer<input, Product2<Optional<input>, intermediateOutput>> intermediateReducer, Reducer<intermediateOutput, output> mainReducer) {
+  public ReducingWithLeftoversReducer(Reducer<input, Product2<Optional<input>, intermediateOutput>> intermediateReducer, Reducer<intermediateOutput, output> mainReducer) {
     this.intermediateReducer = intermediateReducer;
     this.mainReducer = mainReducer;
   }

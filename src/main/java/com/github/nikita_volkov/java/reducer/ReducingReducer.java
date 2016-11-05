@@ -5,12 +5,12 @@ import com.github.nikita_volkov.java.iterations.Iteration;
 /**
  * The Semigroupoid operation for Reducer.
  */
-public final class PrereducingReducer<input, intermediateOutput, output> implements Reducer<input, output> {
+public final class ReducingReducer<input, intermediateOutput, output> implements Reducer<input, output> {
 
   private final Reducer<input, intermediateOutput> intermediateReducer;
   private final Reducer<intermediateOutput, output> mainReducer;
 
-  public PrereducingReducer(Reducer<input, intermediateOutput> intermediateReducer, Reducer<intermediateOutput, output> mainReducer) {
+  public ReducingReducer(Reducer<input, intermediateOutput> intermediateReducer, Reducer<intermediateOutput, output> mainReducer) {
     this.intermediateReducer = intermediateReducer;
     this.mainReducer = mainReducer;
   }

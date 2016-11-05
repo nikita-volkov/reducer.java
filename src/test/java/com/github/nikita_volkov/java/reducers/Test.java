@@ -69,7 +69,7 @@ public class Test extends TestCase {
   public void testPrereducingReducer2() {
 
     Reducer<Character, String> reducer =
-      new PrereducingReducer<>(new FilteringReducer<>(new TakingReducer<>(new CharacterCatReducer(), 2), Character::isUpperCase), new StringCatReducer());
+      new ReducingReducer<>(new FilteringReducer<>(new TakingReducer<>(new CharacterCatReducer(), 2), Character::isUpperCase), new StringCatReducer());
 
     assertEquals("ABC", new IterableReducible<>(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c')).reduce(reducer));
 
@@ -78,7 +78,7 @@ public class Test extends TestCase {
   public void testPrereducingReducer3() {
 
     Reducer<Character, String> reducer =
-      new PrereducingReducer<>(new TakingReducer<>(new CharacterCatReducer(), 2), new StringCatReducer());
+      new ReducingReducer<>(new TakingReducer<>(new CharacterCatReducer(), 2), new StringCatReducer());
 
     assertEquals("AaBbCcD", new IterableReducible<>(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c', 'D')).reduce(reducer));
 
