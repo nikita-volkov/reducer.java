@@ -32,7 +32,6 @@ public final class ReducingWithLeftoversReducer<input, intermediateOutput, outpu
         if (currentIntermediateIterationIsUncommitted) {
           return true;
         } else {
-          currentIntermediateIterationIsUncommitted = false;
           Product2<Optional<input>, intermediateOutput> intermediateOutput = currentIntermediateIteration.output();
           currentIntermediateIteration = intermediateReducer.newIteration();
           boolean continueMainIteration = mainIteration.step(intermediateOutput._2);

@@ -32,7 +32,6 @@ public final class ReducingReducer<input, intermediateOutput, output> implements
         if (currentIntermediateIterationIsUncommitted) {
           return true;
         } else {
-          currentIntermediateIterationIsUncommitted = false;
           intermediateOutput output1 = currentIntermediateIteration.output();
           currentIntermediateIteration = intermediateReducer.newIteration();
           return mainIteration.step(output1);
