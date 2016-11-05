@@ -21,15 +21,18 @@ public final class PrereducingReducer<input, intermediateOutput, output> impleme
 
       private Iteration<input, intermediateOutput> currentIntermediateIteration =
         intermediateReducer.newIteration();
+      private boolean currentIntermediateIterationIsUncommitted =
+        true;
       private final Iteration<intermediateOutput, output> mainIteration =
         mainReducer.newIteration();
 
       @Override
       public boolean step(input input) {
-        boolean keep1 = currentIntermediateIteration.step(input);
-        if (keep1) {
+        currentIntermediateIterationIsUncommitted = currentIntermediateIteration.step(input);
+        if (currentIntermediateIterationIsUncommitted) {
           return true;
         } else {
+          currentIntermediateIterationIsUncommitted = false;
           intermediateOutput output1 = currentIntermediateIteration.output();
           currentIntermediateIteration = intermediateReducer.newIteration();
           return mainIteration.step(output1);
@@ -38,6 +41,9 @@ public final class PrereducingReducer<input, intermediateOutput, output> impleme
 
       @Override
       public output output() {
+        if (currentIntermediateIterationIsUncommitted) {
+          mainIteration.step(currentIntermediateIteration.output());
+        }
         return mainIteration.output();
       }
 

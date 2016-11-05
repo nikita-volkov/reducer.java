@@ -136,7 +136,7 @@
     <dependency>
       <groupId>com.github.nikita-volkov.java</groupId>
       <artifactId>iterations</artifactId>
-      <version>0.6</version>
+      <version>0.6.2</version>
     </dependency>
     <dependency>
       <groupId>com.github.nikita-volkov.java</groupId>

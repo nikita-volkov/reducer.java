@@ -66,30 +66,21 @@ public class Test extends TestCase {
 
   }
 
-  public void testIdentityReducer() {
-
-    Reducer<Character, Character> reducer =
-      new IdentityReducer<>();
-
-    assertEquals('A', new IterableReducible<>(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c')).reduce(reducer).charValue());
-
-  }
-
-  public void testPrereducingReducer1() {
-
-    Reducer<Character, String> reducer =
-      new PrereducingReducer<>(new IdentityReducer<>(), new CharacterCatReducer());
-
-    assertEquals("AaBbCc", new IterableReducible<>(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c')).reduce(reducer));
-
-  }
-
   public void testPrereducingReducer2() {
 
     Reducer<Character, String> reducer =
-      new PrereducingReducer<>(new FilteringReducer<>(new IdentityReducer<>(), Character::isUpperCase), new CharacterCatReducer());
+      new PrereducingReducer<>(new FilteringReducer<>(new TakingReducer<>(new CharacterCatReducer(), 2), Character::isUpperCase), new StringCatReducer());
 
     assertEquals("ABC", new IterableReducible<>(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c')).reduce(reducer));
+
+  }
+
+  public void testPrereducingReducer3() {
+
+    Reducer<Character, String> reducer =
+      new PrereducingReducer<>(new TakingReducer<>(new CharacterCatReducer(), 2), new StringCatReducer());
+
+    assertEquals("AaBbCcD", new IterableReducible<>(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c', 'D')).reduce(reducer));
 
   }
 
