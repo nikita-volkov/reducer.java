@@ -19,26 +19,26 @@ public final class PrereducingReducer<input, intermediateOutput, output> impleme
   public Iteration<input, output> newIteration() {
     return new Iteration<input, output>() {
 
-      private Iteration<input, intermediateOutput> currentIteration1 =
+      private Iteration<input, intermediateOutput> currentIntermediateIteration =
         intermediateReducer.newIteration();
-      private final Iteration<intermediateOutput, output> iteration2 =
+      private final Iteration<intermediateOutput, output> mainIteration =
         mainReducer.newIteration();
 
       @Override
       public boolean step(input input) {
-        boolean keep1 = currentIteration1.step(input);
+        boolean keep1 = currentIntermediateIteration.step(input);
         if (keep1) {
           return true;
         } else {
-          intermediateOutput output1 = currentIteration1.output();
-          currentIteration1 = intermediateReducer.newIteration();
-          return iteration2.step(output1);
+          intermediateOutput output1 = currentIntermediateIteration.output();
+          currentIntermediateIteration = intermediateReducer.newIteration();
+          return mainIteration.step(output1);
         }
       }
 
       @Override
       public output output() {
-        return iteration2.output();
+        return mainIteration.output();
       }
 
     };
