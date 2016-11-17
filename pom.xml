@@ -6,7 +6,7 @@
 
   <groupId>com.github.nikita-volkov.java</groupId>
   <artifactId>reducer</artifactId>
-  <version>0.1.1-SNAPSHOT</version>
+  <version>0.1.1</version>
 
   <name>Reducer</name>
   <description>Composable reducer for Java</description>
