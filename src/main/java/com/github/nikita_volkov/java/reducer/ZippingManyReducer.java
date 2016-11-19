@@ -1,7 +1,9 @@
 package com.github.nikita_volkov.java.reducer;
 
-import com.github.nikita_volkov.java.iterables.*;
+import com.github.nikita_volkov.java.iterables.ArrayIterable;
 import com.github.nikita_volkov.java.iterations.*;
+
+import java.util.LinkedList;
 
 public final class ZippingManyReducer<input, output> implements Reducer<input, Iterable<output>> {
 
@@ -17,7 +19,11 @@ public final class ZippingManyReducer<input, output> implements Reducer<input, I
 
   @Override
   public Iteration<input, Iterable<output>> newIteration() {
-    return new ZippingManyIteration<>(new MappingIterable<>(reducers, Reducer::newIteration));
+    LinkedList<Iteration<input, output>> iterations = new LinkedList<>();
+    for (Reducer<input, output> reducer : reducers) {
+      iterations.add(reducer.newIteration());
+    }
+    return new ZippingManyIteration<>(iterations);
   }
 
 }

@@ -2,7 +2,7 @@ package com.github.nikita_volkov.java.reducers;
 
 import com.github.nikita_volkov.java.composites.Product2;
 import com.github.nikita_volkov.java.reducer.*;
-import com.github.nikita_volkov.java.reducer.reducible.IterableReducible;
+import com.github.nikita_volkov.java.reducer.reducible.*;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -81,6 +81,24 @@ public class Test extends TestCase {
       new ReducingReducer<>(new TakingReducer<>(new CharacterCatReducer(), 2), new StringCatReducer());
 
     assertEquals("AaBbCcD", new IterableReducible<>(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c', 'D')).reduce(reducer));
+
+  }
+
+  public void testZipManyAndChainingReducer() {
+
+    Reducer<Long, Long> reducer =
+      new ChainingReducer<>(new ZippingManyReducer<>(new LongSumReducer(), new LengthReducer<>()), new LongSumReducer());
+
+    assertEquals(6L, new ArrayReducible<>(1L, 1L, 1L).reduce(reducer).longValue());
+
+  }
+
+  public void testZipMany() {
+
+    Reducer<Long, Iterable<Long>> reducer =
+      new ZippingManyReducer<>(new LongSumReducer(), new LengthReducer<>());
+
+    assertEquals(6L, new IterableReducible<>(new ArrayReducible<>(1L, 1L, 1L).reduce(reducer)).reduce(new LongSumReducer()).longValue());
 
   }
 
