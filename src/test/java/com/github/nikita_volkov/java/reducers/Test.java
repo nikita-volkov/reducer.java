@@ -2,7 +2,6 @@ package com.github.nikita_volkov.java.reducers;
 
 import com.github.nikita_volkov.java.composites.Product2;
 import com.github.nikita_volkov.java.reducer.*;
-import com.github.nikita_volkov.java.reducer.reducible.*;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -17,7 +16,7 @@ public class Test extends TestCase {
         string -> string + "!"
       );
 
-    assertEquals("abc!", new IterableReducible<>(Arrays.asList("a", "b", "c")).reduce(reducer));
+    assertEquals("abc!", reducer.reduce(Arrays.asList("a", "b", "c")));
 
   }
 
@@ -32,7 +31,7 @@ public class Test extends TestCase {
         r -> r._2 + "(" + r._1.toString() + ")"
       );
 
-    assertEquals("abc(3)", new IterableReducible<>(Arrays.asList("a", "b", "c")).reduce(reducer));
+    assertEquals("abc(3)", reducer.reduce(Arrays.asList("a", "b", "c")));
 
   }
 
@@ -41,7 +40,7 @@ public class Test extends TestCase {
     Reducer<String, String> reducer =
       new UniquifyingReducer<>(new StringCatReducer());
 
-    assertEquals("abc", new IterableReducible<>(Arrays.asList("a", "b", "b", "c")).reduce(reducer));
+    assertEquals("abc", reducer.reduce(Arrays.asList("a", "b", "b", "c")));
 
   }
 
@@ -50,7 +49,7 @@ public class Test extends TestCase {
     Reducer<Integer, String> reducer =
       new ContraflatmappingReducer<>(new StringCatReducer(), i -> i % 2 == 0 ? Arrays.asList(i.toString()) : Arrays.asList());
 
-    assertEquals("24", new IterableReducible<>(Arrays.asList(1, 2, 3, 4, 5)).reduce(reducer));
+    assertEquals("24", reducer.reduce(Arrays.asList(1, 2, 3, 4, 5)));
 
   }
 
@@ -62,7 +61,7 @@ public class Test extends TestCase {
         new LengthReducer<>()
       );
 
-    assertEquals(new Product2<>(3L, 5L), new IterableReducible<>(Arrays.asList(1, 2, 3, 4, 5)).reduce(reducer));
+    assertEquals(new Product2<>(3L, 5L), reducer.reduce(Arrays.asList(1, 2, 3, 4, 5)));
 
   }
 
@@ -71,7 +70,7 @@ public class Test extends TestCase {
     Reducer<Character, String> reducer =
       new ReducingReducer<>(new FilteringReducer<>(new TakingReducer<>(new CharacterCatReducer(), 2), Character::isUpperCase), new StringCatReducer());
 
-    assertEquals("ABC", new IterableReducible<>(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c')).reduce(reducer));
+    assertEquals("ABC", reducer.reduce(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c')));
 
   }
 
@@ -80,7 +79,7 @@ public class Test extends TestCase {
     Reducer<Character, String> reducer =
       new ReducingReducer<>(new TakingReducer<>(new CharacterCatReducer(), 2), new StringCatReducer());
 
-    assertEquals("AaBbCcD", new IterableReducible<>(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c', 'D')).reduce(reducer));
+    assertEquals("AaBbCcD", reducer.reduce(Arrays.asList('A', 'a', 'B', 'b', 'C', 'c', 'D')));
 
   }
 
@@ -89,7 +88,7 @@ public class Test extends TestCase {
     Reducer<Long, Long> reducer =
       new ChainingReducer<>(new ZippingManyReducer<>(new LongSumReducer(), new LengthReducer<>()), new LongSumReducer());
 
-    assertEquals(6L, new ArrayReducible<>(1L, 1L, 1L).reduce(reducer).longValue());
+    assertEquals(6L, reducer.reduce(1L, 1L, 1L).longValue());
 
   }
 
@@ -98,7 +97,7 @@ public class Test extends TestCase {
     Reducer<Long, Iterable<Long>> reducer =
       new ZippingManyReducer<>(new LongSumReducer(), new LengthReducer<>());
 
-    assertEquals(6L, new IterableReducible<>(new ArrayReducible<>(1L, 1L, 1L).reduce(reducer)).reduce(new LongSumReducer()).longValue());
+    assertEquals(6L, new LongSumReducer().reduce(reducer.reduce(1L, 1L, 1L)).longValue());
 
   }
 
